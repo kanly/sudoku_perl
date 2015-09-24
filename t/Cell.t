@@ -74,6 +74,115 @@ subtest 'try_with_possible_values' => sub {
     is($result, 1, "Result should be 1");
 };
 
+subtest 'solve without success' => sub {
+    my $board = Sudoku::Board->new(
+        input => [
+            [0,0,0,0,3,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,1,0,0,0,0,6,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,5,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,2,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+        ],
+    );
+
+    my $cell = get_cell($board, 2, 4);
+
+    $cell->solve();
+    is($cell->value, 0 , 'Cell not solved');
+
+};
+
+subtest 'solve with success - remaining_values' => sub {
+    my $board = Sudoku::Board->new(
+        input => [
+            [1,0,0,7,0,2,0,9,0],
+            [3,0,5,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,6,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,8,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+        ],
+    );
+
+    my $cell = get_cell($board, 0, 1);
+
+    print($cell->value);
+    $cell->solve();
+    is($cell->value, 4, 'Cell value = 4');
+};
+
+subtest 'solve with success - possible in sector' => sub {
+    my $board = Sudoku::Board->new(
+        input => [
+            [1,0,3,0,0,0,0,0,0],
+            [0,0,0,0,4,0,0,0,0],
+            [0,0,0,0,4,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+        ],
+    );
+
+    my $cell = get_cell($board, 0, 1);
+
+    $cell->solve();
+    is($cell->value, 4, 'Cell value = 4');
+};
+
+
+subtest 'solve with success - possible in column' => sub {
+    my $board = Sudoku::Board->new(
+        input => [
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+        ],
+    );
+
+    my $cell = get_cell($board, 0, 1);
+
+    $cell->solve();
+    is($cell->value, 4, 'Cell value = 4');
+};
+
+
+subtest 'solve with success - possible in row' => sub {
+    my $board = Sudoku::Board->new(
+        input => [
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [4,0,4,4,4,4,4,4,4],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0],
+        ],
+    );
+
+    my $cell = get_cell($board, 0, 1);
+
+    $cell->solve();
+    is($cell->value, 4, 'Cell value = 4');
+};
+
 sub empty_board {
     return Sudoku::Board->new(
         input => [

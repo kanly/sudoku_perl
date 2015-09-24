@@ -35,6 +35,8 @@ sub remaining_values {
 # try to assign a value to this cell
 sub solve {
     my $self = shift;
+    return if($self->is_solved());
+
     my @remaining_values = $self->remaining_values();
     if (scalar @remaining_values == 1) {
         $self->value($remaining_values[0]);
@@ -51,15 +53,18 @@ sub solve {
 sub try_with_possible_values {
     #init
     my $self = shift;
+
     my $rh_params = {
-        other_poss_values 	=> {} ,
+        other_poss_values 	=> {},
         rem_values 			=> [],
         @_
     };
+
     my %other_cells_poss_values = %{ $rh_params->{'other_poss_values'} };
 
     # filter remaining values
     my @remaining_values = grep { !exists $other_cells_poss_values{$_} } @{ $rh_params->{'rem_values'} };
+
     # check if there is a solution
     if (scalar @remaining_values == 1) {
         $self->value($remaining_values[0]);
@@ -73,11 +78,9 @@ sub try_with_possible_values {
 # is the only one that can have a value in her sector
 sub try_with_possible_values_in_sector {
     my ($self, @remaining_values) = @_;
-
-    return $self->try_with_possible_values({
-            other_poss_value => \$self->board->other_possible_values_in_sector($self),
+    return $self->try_with_possible_values(
+            other_poss_values => {$self->board->other_possible_values_in_sector($self)},
             rem_values => \@remaining_values,
-        }
     );
 }
 
@@ -85,11 +88,9 @@ sub try_with_possible_values_in_sector {
 # is the only one that can have a value in her column
 sub try_with_possible_values_in_col {
     my ($self, @remaining_values) = @_;
-
-    return $self->try_with_possible_values({
-            other_poss_value => \$self->board->other_possible_values_in_col($self),
+    return $self->try_with_possible_values(
+            other_poss_values => {$self->board->other_possible_values_in_col($self)},
             rem_values => \@remaining_values,
-        }
     );
 }
 
@@ -97,12 +98,17 @@ sub try_with_possible_values_in_col {
 # is the only one that can have a value in her row
 sub try_with_possible_values_in_row {
     my ($self, @remaining_values) = @_;
-
-    return $self->try_with_possible_values({
-            other_poss_value => \$self->board->other_possible_values_in_row($self),
+    return $self->try_with_possible_values(
+            other_poss_values => {$self->board->other_possible_values_in_row($self)},
             rem_values => \@remaining_values,
-        }
     );
+}
+
+
+sub is_solved {
+  my $self = shift;
+
+  return $self->value;
 }
 
 1;

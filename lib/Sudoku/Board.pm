@@ -30,6 +30,48 @@ sub build_cells_array {
     return \@cells;
 }
 
+#try to solve the sudoku
+sub solve {
+    my $self = shift;
+
+    my $i = 0;
+    my @cells=@{$self->cells};
+
+    while ( !$self->is_solved() ){
+        $_->solve() foreach (@cells);
+
+        $i++;
+        return "unsolvable" if $i == 50;
+    }
+
+    use feature 'say';
+    use Data::Dump 'pp';
+
+    say "Sudoku solved in [$i] iterations";
+    say pp $self->to_matrix();
+
+    return $i;
+}
+
+sub to_matrix {
+    my $self = shift;
+    my @values = map {
+        $_->value;
+    } @{$self->cells};
+    my @matrix;
+    push @matrix, [ splice @values, 0, 9 ] while @values;
+    return @matrix;
+}
+
+sub is_solved {
+   my $self = shift;
+   my $i = 0;
+   my @cells = @{$self->cells};
+
+   $i++ while ( ( $i < scalar @cells ) && $cells[$i]->is_solved );
+   return $i==scalar @cells;
+}
+
 #values already setted in a given row
 sub values_in_row {
     my ($self, $row) = @_;
@@ -85,8 +127,6 @@ sub other_possible_values_in_col {
 
 #generic method to retrieve possible values of other cells that satisfies the given predicate
 sub other_possible_values_in {
-    use Data::Dump 'pp';
-    use feature 'say';
 
     #reading params
     my $self = shift;
