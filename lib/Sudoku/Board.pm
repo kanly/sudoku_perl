@@ -100,8 +100,8 @@ sub other_possible_values_in_sector {
     my ($self, $requesting_cell) = @_;
 
     return $self->other_possible_values_in(
-        requesting_cell	=> $requesting_cell,
-        predicate 		=> $self->can('is_empty_and_in_same_sector'),
+        requesting_cell => $requesting_cell,
+        predicate       => $self->can('is_empty_and_in_same_sector'),
     );
 }
 
@@ -110,8 +110,8 @@ sub other_possible_values_in_row {
     my ($self, $requesting_cell) = @_;
 
     return $self->other_possible_values_in(
-        requesting_cell	=> $requesting_cell,
-        predicate 		=> $self->can('is_empty_and_in_same_row'),
+        requesting_cell => $requesting_cell,
+        predicate       => $self->can('is_empty_and_in_same_row'),
     );
 }
 
@@ -120,8 +120,8 @@ sub other_possible_values_in_col {
     my ($self, $requesting_cell) = @_;
 
     return $self->other_possible_values_in(
-        requesting_cell	=> $requesting_cell,
-        predicate 		=> $self->can('is_empty_and_in_same_col'),
+        requesting_cell => $requesting_cell,
+        predicate       => $self->can('is_empty_and_in_same_col'),
     );
 }
 

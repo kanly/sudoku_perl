@@ -55,8 +55,8 @@ sub try_with_possible_values {
     my $self = shift;
 
     my $rh_params = {
-        other_poss_values 	=> {},
-        rem_values 			=> [],
+        other_poss_values => {},
+        rem_values        => [],
         @_
     };
 
@@ -80,7 +80,7 @@ sub try_with_possible_values_in_sector {
     my ($self, @remaining_values) = @_;
     return $self->try_with_possible_values(
             other_poss_values => {$self->board->other_possible_values_in_sector($self)},
-            rem_values => \@remaining_values,
+            rem_values        => \@remaining_values,
     );
 }
 
@@ -90,7 +90,7 @@ sub try_with_possible_values_in_col {
     my ($self, @remaining_values) = @_;
     return $self->try_with_possible_values(
             other_poss_values => {$self->board->other_possible_values_in_col($self)},
-            rem_values => \@remaining_values,
+            rem_values        => \@remaining_values,
     );
 }
 
@@ -100,7 +100,7 @@ sub try_with_possible_values_in_row {
     my ($self, @remaining_values) = @_;
     return $self->try_with_possible_values(
             other_poss_values => {$self->board->other_possible_values_in_row($self)},
-            rem_values => \@remaining_values,
+            rem_values        => \@remaining_values,
     );
 }
 
